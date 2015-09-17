@@ -88,7 +88,6 @@ class BealFarm extends React.Component {
 		// const sensorUrl     = (id) => `https://pbs.twimg.com/profile_images/2347914910/is8zdvgqr2qbj3nwzevf.png`;
 		const switchUrl     = (s) => { return s ? 'switch_on.png' : 'switch_off.png' ; };
 		const sensorUrl     = (s) => { return s ? 'sensor_on.png' : 'sensor_off.png' ; };
-		const nameOf     = (s) => { return s.type.charAt(0).toUpperCase() + s.type.slice(1) + ': ' + s.name.replace( /sensor/i, '' ).replace( /switch/i, '' ); };
 		const stateStrings = {
 			sensor: {
 				0: 'inactive',
@@ -98,8 +97,14 @@ class BealFarm extends React.Component {
 				0: 'off',
 				1: 'on'
 			}
-		}
-		const stateOf     = (s) => { return 'Currently: ' + stateStrings[s.type][s.value] };
+		};
+		const nameOf     = (s) => {
+			const name = s.name.replace( /sensor/i, '' ).replace( /switch/i, '' );
+			const nameType = name.charAt(0).toUpperCase() + name.slice(1) + ' ' + s.type ;
+			const nameTypeState = nameType + ' ' + stateStrings[s.type][s.value];
+			return nameTypeState;
+		};
+		// const stateOf     = (s) => { return 'Currently: ' + stateStrings[s.type][s.value] };
 		// const timeOf     = (s) => { return new Date(s).toLocaleString(); }; not w React SS rendering
 		const timeOf     = (s) => {
 			if( !s.lastTimeString ) {
@@ -137,6 +142,7 @@ console.log('LANCE render', this.props.ssPoints);
 				// <h3>Switches</h3>
 				// </ul>
 				// <ul>
+									// <div>{stateOf(s)}</div>
 		return (
 			<InlineCss stylesheet={BealFarm.css(pointSize)} namespace="BealFarm">
 				<ul>
@@ -146,7 +152,6 @@ console.log('LANCE render', this.props.ssPoints);
 								<img className="point" src={switchUrl(s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
-									<div>{stateOf(s)}</div>
 									<div>{timeOf(s)}</div>
 								</span>
 							</a>
@@ -158,7 +163,6 @@ console.log('LANCE render', this.props.ssPoints);
 								<img className="point" src={sensorUrl(s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
-									<div>{stateOf(s)}</div>
 									<div>{timeOf(s)}</div>
 								</span>
 							</a>
