@@ -1,14 +1,18 @@
 NOTES
 
-integrate UI and data endpoints
+x integrate UI and data endpoints
 	move UI onto bealfarm.com
 	move data endpoint to different port (pi/client change)
 
-mobile
+date on header
 
-autoupdates
+autoupdates on mobile
 
 history
-	expandable
+	scrollable/expandable?
+
+texts
 
 cameras
+
+sort order

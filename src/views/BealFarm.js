@@ -189,8 +189,24 @@ console.log('LANCE render', this.props.ssPoints);
 				padding-left: 0;
 			}
 			& a {
+				font-size: larger ;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+
 			    display: flex;
+					display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+					display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+					display: -ms-flexbox;      /* TWEENER - IE 10 */
+					display: -webkit-flex;     /* NEW - Chrome */
+					display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
 			    align-items: center;
+					-webkit-box-align: center;
+					-webkit-flex-align: center;
+					-ms-flex-align: center;
+					-webkit-align-items: center;
+					align-items: center;
+
 				color: black;
 				text-decoration: none;
 				pointer-events: none;
@@ -201,7 +217,7 @@ console.log('LANCE render', this.props.ssPoints);
 				// border-radius: 50%;
 				width: ${pointSize}px;
 				height: ${pointSize}px;
-				margin: 2px 2px 2px 2px;
+				margin: 2px 8px 2px 2px;
 			}
 		`);
 	}
