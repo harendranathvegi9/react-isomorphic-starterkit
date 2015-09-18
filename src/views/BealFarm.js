@@ -61,19 +61,25 @@ class BealFarm extends React.Component {
 			 * Recursive function to transmit the rest of the stargazers on the client.
 			 */
 			const transmitSsPoints = () => {
-				console.log('LANCE transmitSsPoints', this.props);
-				if (!this.props.transmit.variables.amount > 0) {
-					return;
-				}
+				console.log('LANCE transmitSsPoints', new Date() );
+
+				// if (this.props.transmit.variables.pagesToFetch > 0) {
+				// 	return;
+				// }
 
 				this.props.transmit.forceFetch({
 					prevSsPoints: this.props.ssPoints,
 					nextPage:       this.props.transmit.variables.nextPage + 1,
 					pagesToFetch:   this.props.transmit.variables.pagesToFetch - 1
-				}).then(transmitSsPoints);
+				// }).then(transmitSsPoints);
+				});
 			};
 
-			transmitSsPoints();
+			// transmitSsPoints();
+			const interval = 10000 ;
+			setTimeout( function() {
+				setInterval( transmitSsPoints, interval );
+			}, interval );
 		}
 	}
 
@@ -148,7 +154,7 @@ console.log('LANCE render', this.props.ssPoints);
 				<ul>
 					{switches.map((s) =>
 						<li key={s.name}>
-							<a href={"https://github.com/"+s.name} title={s.name} target="_blank">
+							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
 								<img className="point" src={switchUrl(s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
@@ -159,7 +165,7 @@ console.log('LANCE render', this.props.ssPoints);
 					)}
 					{sensors.map((s) =>
 						<li key={s.name}>
-							<a href={"https://github.com/"+s.name} title={s.name} target="_blank">
+							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
 								<img className="point" src={sensorUrl(s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
@@ -187,6 +193,8 @@ console.log('LANCE render', this.props.ssPoints);
 			    align-items: center;
 				color: black;
 				text-decoration: none;
+				pointer-events: none;
+				cursor: default;
 			}
 			& img {
 				// flex: none;
@@ -217,7 +225,7 @@ export default Transmit.createContainer(BealFarm, {
 			/**
 			 * On the server, connect to GitHub directly.
 			 */
-			let api = "http://bealfarm.com";
+			let api = "http://bealfarm.com:8000";
 
 			/**
 			 * Load a few ss pionts using the Fetch API.
@@ -239,7 +247,8 @@ console.log('LANCE fetch', api);
 				 */
 				const fechedPoints = body ;	// .map(({id, login}) => ({id, login}));
 
-				var allPoints = prevSsPoints.concat(fechedPoints);
+				// refresh, don't accumulate: var allPoints = prevSsPoints.concat(fechedPoints);
+				var allPoints = fechedPoints ;
 console.log('LANCE allPoints', allPoints);
 				return allPoints;
 			}).catch((error) => {
