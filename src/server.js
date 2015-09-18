@@ -16,7 +16,9 @@ var hostname = process.env.HOSTNAME || "localhost";
  */
 const server = new Server();
 
-server.connection({host: hostname, port: process.env.PORT || 8000});
+// server.connection({host: hostname, port: process.env.PORT || 8000});
+// server.connection({host: '10.1.3.107', port: process.env.PORT || 8000});
+server.connection({host: 'bealfarm.com', port: 80});
 
 server.register([
 	h2o2,
@@ -93,6 +95,7 @@ server.ext("onPreResponse", (request, reply) => {
 							<meta charset="utf-8">
 							<title>react-isomorphic-starterkit</title>
 							<link rel="shortcut icon" href="/favicon.ico">
+							<meta name="viewport" content="width=device-width, initial-scale=1">
 						</head>
 						<body>
 							<div id="react-root">${reactString}</div>
