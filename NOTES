@@ -4,9 +4,7 @@ x integrate UI and data endpoints
 	move UI onto bealfarm.com
 	move data endpoint to different port (pi/client change)
 
-date on header
-
-autoupdates on mobile
+x date on header
 
 history
 	scrollable/expandable?
@@ -15,6 +13,8 @@ texts
 
 cameras
 
-sort order
+x sort order
 
 dead checker
+
+unable to set time zones upon time format requests on mobile/safari
