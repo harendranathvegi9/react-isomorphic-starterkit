@@ -17,8 +17,7 @@ var hostname = process.env.HOSTNAME || "localhost";
 const server = new Server();
 
 // server.connection({host: hostname, port: process.env.PORT || 8000});
-server.connection({host: '10.1.3.114', port: process.env.PORT || 8000});
-// server.connection({host: 'bealfarm.com', port: 80});
+server.connection({host: hostname, port: process.env.PORT || 80});
 
 server.register([
 	h2o2,
