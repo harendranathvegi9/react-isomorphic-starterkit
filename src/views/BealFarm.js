@@ -68,7 +68,7 @@ class BealFarm extends React.Component {
 				// }
 
 				this.props.transmit.forceFetch({
-					prevSsPoints: this.props.ssPoints,
+					// prevSsPoints: this.props.response,
 					nextPage:       this.props.transmit.variables.nextPage + 1,
 					pagesToFetch:   this.props.transmit.variables.pagesToFetch - 1
 				// }).then(transmitSsPoints);
@@ -134,12 +134,14 @@ class BealFarm extends React.Component {
 		/**
 		 * This is a Transmit fragment.
 		 */
-console.log('LANCE render', this.props.ssPoints);
-		const {ssPoints} = this.props;
-		const switches = ssPoints.filter( function( s ) {
+console.log('LANCE render', this.props.response);
+		const {response} = this.props;
+		const curTime = new Date( response.time );
+		const curTimeString = 'Beal Farm at ' + curTime.toLocaleTimeString('en-US', {timeZone: 'America/Denver', timeZoneName: "short"});
+		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
 		});
-		const sensors = ssPoints.filter( function( s ) {
+		const sensors = response.ssPoints.filter( function( s ) {
 			return s.type === 'sensor' ;
 		});
 		// console.log( 'switches', switches );
@@ -151,6 +153,7 @@ console.log('LANCE render', this.props.ssPoints);
 									// <div>{stateOf(s)}</div>
 		return (
 			<InlineCss stylesheet={BealFarm.css(pointSize)} namespace="BealFarm">
+				<h3>{curTimeString}</h3>
 				<ul>
 					{switches.map((s) =>
 						<li key={s.name}>
@@ -230,14 +233,14 @@ console.log('LANCE render', this.props.ssPoints);
 export default Transmit.createContainer(BealFarm, {
 	initialVariables: {
 		nextPage:       1,
-		pagesToFetch:   1,
-		prevSsPoints: []
+		pagesToFetch:   1
+		// prevSsPoints: []
 	},
 	fragments: {
 		/**
 		 * Return a Promise of the previous stargazers + the newly fetched stargazers.
 		 */
-		ssPoints ({nextPage, pagesToFetch, prevSsPoints}) {
+		response ({nextPage, pagesToFetch}) {	// , prevSsPoints}) {
 			/**
 			 * On the server, connect to GitHub directly.
 			 */
@@ -254,8 +257,9 @@ console.log('LANCE fetch', api);
 				/**
 				 * Stop fetching if the response body is empty.
 				 */
-				if (!body || !body.length) {
-					return prevSsPoints;
+				if (!body) {	// no longer an array || !body.length) {
+					console.log('LANCE Error no body should never happen');
+					return null;	// prevSsPoints;
 				}
 
 				/**
