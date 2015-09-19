@@ -187,6 +187,9 @@ console.log('LANCE render', this.props.response);
 	 */
 	static css (pointSize) {
 		return (`
+			& h3 {
+				text-align: center;
+			}
 			& ul {
 				list-style-type: none;
 				padding-left: 0;
