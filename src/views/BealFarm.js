@@ -93,10 +93,26 @@ class BealFarm extends React.Component {
 				return '';
 			}
 			var d = new Date( s.lastTimeStamp * 1000 );
-			var newDateStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
-			newDateStr += ', ' + d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  })
-			newDateStr = (s.type === 'sensor' ? 'Last active: ' : 'Last on: ') + newDateStr ;
-			return newDateStr.replace( /,/g, '' );
+			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
+			// just to make up for Safari not doing toLocalTimeString
+			var newTimeSplit = newTimeStr.split(' ');
+			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			var justMinSecs = newTimeSplit.slice(0);
+			console.log( 'LANCE justMinSecs1', justMinSecs );
+			justMinSecs = justMinSecs[0].split(':');
+			console.log( 'LANCE justMinSecs2', justMinSecs );
+			justMinSecs = justMinSecs.slice(0, 2).join(':');
+			console.log( 'LANCE justMinSecs3', justMinSecs );
+			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
+			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
+			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
+			// just to make up for Safari not doing toLocalDateString
+			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
+			newDateStr = newDateStr.split(' ').map( function( e ) { return e.slice(0,3); }).join(' ');;
+			var newTimeDateStr = newTimeStr + ', ' + newDateStr ;
+			newTimeDateStr = (s.type === 'sensor' ? 'Last active: ' : 'Last on: ') + newTimeDateStr ;
+			newTimeDateStr = newTimeDateStr.replace( /,/g, '' );
+			return newTimeDateStr;
 		};
 
 		// dynamic data
@@ -109,8 +125,16 @@ class BealFarm extends React.Component {
 		 */
 console.log('LANCE render');	// , this.props.response);
 		const {response} = this.props;
-		const curTime = new Date( response.time * 1000 );
-		const curTimeString = 'Beal Farm at ' + curTime.toLocaleTimeString('en-US', {timeZone: 'America/Denver', timeZoneName: "short"});
+		var curTime = new Date( response.time * 1000 );
+		curTime = curTime.toLocaleTimeString('en-US', {timeZone: 'America/Denver', timeZoneName: "short", hour: 'numeric', minute: 'numeric'});
+			// just to make up for Safari not doing toLocalTimeString
+			var newTimeSplit = curTime.split(' ');
+			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			var justMinSecs = newTimeSplit.slice(0);
+			justMinSecs = justMinSecs[0].split(':');
+			justMinSecs = justMinSecs.slice(0, 2).join(':');
+			curTime = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
+		const curTimeString = 'Beal Farm at ' + curTime;
 		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
 		}).sort( function( a, b ) {
