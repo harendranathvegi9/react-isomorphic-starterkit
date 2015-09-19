@@ -61,6 +61,7 @@ class BealFarm extends React.Component {
 		// const sensorUrl     = (id) => `https://pbs.twimg.com/profile_images/2347914910/is8zdvgqr2qbj3nwzevf.png`;
 		const switchUrl     = (s) => { return s ? 'switch_on.png' : 'switch_off.png' ; };
 		const sensorUrl     = (s) => { return s ? 'sensor_on.png' : 'sensor_off.png' ; };
+		const ssUrl     = (t, s) => { return t === 'sensor' ? sensorUrl(s) : switchUrl(s) ; };
 		const stateStrings = {
 			sensor: {
 				0: 'inactive',
@@ -114,6 +115,40 @@ class BealFarm extends React.Component {
 			newTimeDateStr = newTimeDateStr.replace( /,/g, '' );
 			return newTimeDateStr;
 		};
+		const historyOf     = (s) => {
+			console.log( 'LANCE history ', s.time );
+			if( !s.time ) {
+				return '';
+			}
+			if( typeof s.time === 'string' ) {
+				return s.time;
+			}
+			if( typeof s.time !== 'number' ) {
+				console.log( 'LANCE bad s.time', s.time );
+				return '';
+			}
+			var d = new Date( s.time * 1000 );
+			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
+			// just to make up for Safari not doing toLocalTimeString
+			var newTimeSplit = newTimeStr.split(' ');
+			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			var justMinSecs = newTimeSplit.slice(0);
+			console.log( 'LANCE justMinSecs1', justMinSecs );
+			justMinSecs = justMinSecs[0].split(':');
+			console.log( 'LANCE justMinSecs2', justMinSecs );
+			justMinSecs = justMinSecs.slice(0, 2).join(':');
+			console.log( 'LANCE justMinSecs3', justMinSecs );
+			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
+			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
+			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
+			// just to make up for Safari not doing toLocalDateString
+			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
+			newDateStr = newDateStr.split(' ').map( function( e ) { return e.slice(0,3); }).join(' ');;
+			var newTimeDateStr = newTimeStr + ', ' + newDateStr ;
+			// newTimeDateStr = (s.type === 'sensor' ? 'Last active: ' : 'Last on: ') + newTimeDateStr ;
+			newTimeDateStr = newTimeDateStr.replace( /,/g, '' );
+			return newTimeDateStr;
+		};
 
 		// dynamic data
 		// phtoshop state
@@ -155,12 +190,12 @@ console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.las
                         }
                         if( !b.lastTimeStamp || (typeof b.lastTimeStamp !== 'number' )) {
                                 b.lastTimeStamp = 0 ;
-                        }       
+                        }
                         return b.lastTimeStamp - a.lastTimeStamp ;
                 });
+		const history = response.ssHistory;
+		console.log( 'history', history );
 
-		// console.log( 'switches', switches );
-		// console.log( 'sensors', sensors );
 				// <h1>Beal Farm</h1>
 				// <h3>Switches</h3>
 				// </ul>
@@ -188,6 +223,20 @@ console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.las
 								<span>
 									<div>{nameOf(s)}</div>
 									<div>{timeOf(s)}</div>
+								</span>
+							</a>
+						</li>
+					)}
+				</ul>
+				<h3>History</h3>
+				<ul>
+					{history.map((s) =>
+						<li>
+							<a href={"https://bealfarm.com/"+s.name} className={s.type} title={s.name} target="_blank">
+								<img className="point" src={ssUrl(s.type, s.value)} alt={s.name} />
+								<span>
+									<div>{nameOf(s)}</div>
+									<div>{historyOf(s)}</div>
 								</span>
 							</a>
 						</li>
