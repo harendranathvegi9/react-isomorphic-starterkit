@@ -3,39 +3,6 @@ import React from "react";
 import InlineCss from "react-inline-css";
 import Transmit from "react-transmit";
 
-/*
-		const xxxqueryResults = [{
-			    location: "BealFarm",
-			    type: "sensor",
-			    name: "cattleSensor",
-			    timeStamp: "Tue Sep 15 19:44:04 MDT 2015",
-			    timeString: "Tue Sep 15 19:44:04 MDT 2015",
-			    value: 0
-			}, {
-			    location: "BealFarm",
-			    type: "sensor",
-			    name: "shopSensor",
-			    timeStamp: "Tue Sep 15 19:49:17 MDT 2015",
-			    timeString: "Tue Sep 15 19:49:17 MDT 2015",
-			    value: 0
-			}, {
-			    location: "BealFarm",
-			    type: "switch",
-			    name: "cordSwitch",
-			    timeStamp: "Tue Sep 15 19:52:10 MDT 2015",
-			    timeString: "Tue Sep 15 19:52:10 MDT 2015",
-			    value: 0
-			}, {
-			    location: "BealFarm",
-			    type: "switch",
-			    name: "wallSwitch",
-			    timeStamp: "Tue Sep 15 19:52:11 MDT 2015",
-			    timeString: "Tue Sep 15 19:52:11 MDT 2015",
-			    value: 0
-			}
-		];
-*/
-
 /**
  * main React application entry-point for both the server and client.
  */
@@ -61,7 +28,7 @@ class BealFarm extends React.Component {
 			 * Recursive function to transmit the rest of the stargazers on the client.
 			 */
 			const transmitSsPoints = () => {
-				console.log('LANCE transmitSsPoints', new Date() );
+				// console.log('LANCE transmitSsPoints', new Date() );
 
 				// if (this.props.transmit.variables.pagesToFetch > 0) {
 				// 	return;
@@ -113,17 +80,23 @@ class BealFarm extends React.Component {
 		// const stateOf     = (s) => { return 'Currently: ' + stateStrings[s.type][s.value] };
 		// const timeOf     = (s) => { return new Date(s).toLocaleString(); }; not w React SS rendering
 		const timeOf     = (s) => {
-			if( !s.lastTimeString ) {
+			// s.lastTimeStamp = 1442647938;
+			console.log( 'LANCE date ', s.lastTimeStamp );
+			if( !s.lastTimeStamp ) {
 				return '';
 			}
-			var spaceSplits = s.lastTimeString.split(' ') ;
-			var timeSplits = spaceSplits[3].split(':') ;
-			var hour = timeSplits[0] ;
-			var pmam = hour > 12 ;
-			hour = pmam ? hour - 12 : hour ;
-			pmam = pmam ? 'PM' : 'AM' ;
-			var newDateStr = hour + ':' + timeSplits[1] + ' ' + pmam + ',  ' + spaceSplits.slice(0,3).join(' ') ;
-			return (s.type === 'sensor' ? 'Last active: ' : 'Last on: ') + newDateStr ;
+			if( typeof s.lastTimeStamp === 'string' ) {
+				return s.lastTimeStamp;
+			}
+			if( typeof s.lastTimeStamp !== 'number' ) {
+				console.log( 'LANCE bad s.lastTimeStamp', s.lastTimeStamp );
+				return '';
+			}
+			var d = new Date( s.lastTimeStamp * 1000 );
+			var newDateStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
+			newDateStr += ', ' + d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  })
+			newDateStr = (s.type === 'sensor' ? 'Last active: ' : 'Last on: ') + newDateStr ;
+			return newDateStr.replace( /,/g, '' );
 		};
 
 		// dynamic data
@@ -134,16 +107,34 @@ class BealFarm extends React.Component {
 		/**
 		 * This is a Transmit fragment.
 		 */
-console.log('LANCE render', this.props.response);
+console.log('LANCE render');	// , this.props.response);
 		const {response} = this.props;
-		const curTime = new Date( response.time );
+		const curTime = new Date( response.time * 1000 );
 		const curTimeString = 'Beal Farm at ' + curTime.toLocaleTimeString('en-US', {timeZone: 'America/Denver', timeZoneName: "short"});
 		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
+		}).sort( function( a, b ) {
+console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.lastTimeStamp !== 'number' ));	// , this.props.response);
+			if( !a.lastTimeStamp || (typeof a.lastTimeStamp !== 'number' )) {
+				a.lastTimeStamp = 0 ;
+			}
+			if( !b.lastTimeStamp || (typeof b.lastTimeStamp !== 'number' )) {
+				b.lastTimeStamp = 0 ;
+			}
+			return b.lastTimeStamp - a.lastTimeStamp ;
 		});
 		const sensors = response.ssPoints.filter( function( s ) {
 			return s.type === 'sensor' ;
-		});
+                }).sort( function( a, b ) {
+                        if( !a.lastTimeStamp || (typeof a.lastTimeStamp !== 'number' )) {
+                                a.lastTimeStamp = 0 ;
+                        }
+                        if( !b.lastTimeStamp || (typeof b.lastTimeStamp !== 'number' )) {
+                                b.lastTimeStamp = 0 ;
+                        }       
+                        return b.lastTimeStamp - a.lastTimeStamp ;
+                });
+
 		// console.log( 'switches', switches );
 		// console.log( 'sensors', sensors );
 				// <h1>Beal Farm</h1>
