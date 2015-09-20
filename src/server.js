@@ -92,7 +92,7 @@ server.ext("onPreResponse", (request, reply) => {
 					<html lang="en-us">
 						<head>
 							<meta charset="utf-8">
-							<title>react-isomorphic-starterkit</title>
+							<title>Beal Farm</title>
 							<link rel="shortcut icon" href="/favicon.ico">
 							<meta name="viewport" content="width=device-width, initial-scale=1">
 						</head>
