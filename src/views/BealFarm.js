@@ -43,7 +43,7 @@ class BealFarm extends React.Component {
 			};
 
 			// transmitSsPoints();
-			const interval = 10000 ;
+			const interval = 60000 ;
 			setTimeout( function() {
 				setInterval( transmitSsPoints, interval );
 			}, interval );
@@ -94,7 +94,7 @@ class BealFarm extends React.Component {
 				return '';
 			}
 			var d = new Date( s.lastTimeStamp * 1000 );
-			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
+			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
 			// just to make up for Safari not doing toLocalTimeString
 			var newTimeSplit = newTimeStr.split(' ');
 			console.log( 'LANCE newTimeSplit', newTimeSplit );
@@ -106,7 +106,7 @@ class BealFarm extends React.Component {
 			console.log( 'LANCE justMinSecs3', justMinSecs );
 			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
 			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
-			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
+			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver' });
 			// just to make up for Safari not doing toLocalDateString
 			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
 			newDateStr = newDateStr.split(' ').map( function( e ) { return e.slice(0,3); }).join(' ');;
@@ -128,7 +128,7 @@ class BealFarm extends React.Component {
 				return '';
 			}
 			var d = new Date( s.time * 1000 );
-			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric'  });
+			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
 			// just to make up for Safari not doing toLocalTimeString
 			var newTimeSplit = newTimeStr.split(' ');
 			console.log( 'LANCE newTimeSplit', newTimeSplit );
@@ -140,7 +140,7 @@ class BealFarm extends React.Component {
 			console.log( 'LANCE justMinSecs3', justMinSecs );
 			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
 			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
-			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
+			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver' });
 			// just to make up for Safari not doing toLocalDateString
 			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
 			newDateStr = newDateStr.split(' ').map( function( e ) { return e.slice(0,3); }).join(' ');;
