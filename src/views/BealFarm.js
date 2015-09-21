@@ -173,7 +173,6 @@ console.log('LANCE render');	// , this.props.response);
 		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
 		}).sort( function( a, b ) {
-console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.lastTimeStamp !== 'number' ));	// , this.props.response);
 			if( !a.lastTimeStamp || (typeof a.lastTimeStamp !== 'number' )) {
 				a.lastTimeStamp = 0 ;
 			}
@@ -193,6 +192,17 @@ console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.las
                         }
                         return b.lastTimeStamp - a.lastTimeStamp ;
                 });
+		const ssPoints = response.ssPoints.filter( function( s ) {
+			return s.type === 'switch' || s.type === 'sensor' ;
+		}).sort( function( a, b ) {
+			if( !a.lastTimeStamp || (typeof a.lastTimeStamp !== 'number' )) {
+				a.lastTimeStamp = 0 ;
+			}
+			if( !b.lastTimeStamp || (typeof b.lastTimeStamp !== 'number' )) {
+				b.lastTimeStamp = 0 ;
+			}
+			return b.lastTimeStamp - a.lastTimeStamp ;
+		});
 		const history = response.ssHistory;
 		console.log( 'history', history );
 
@@ -204,22 +214,11 @@ console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.las
 		return (
 			<InlineCss stylesheet={BealFarm.css(pointSize)} namespace="BealFarm">
 				<h3>{curTimeString}</h3>
-				<ul>
-					{switches.map((s) =>
-						<li key={s.name}>
+				<ul className='current'>
+					{ssPoints.map((s) =>
+						<li className={s.type} key={s.name + '_current'}>
 							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
-								<img className="point" src={switchUrl(s.value)} alt={s.name} />
-								<span>
-									<div>{nameOf(s)}</div>
-									<div>{timeOf(s)}</div>
-								</span>
-							</a>
-						</li>
-					)}
-					{sensors.map((s) =>
-						<li key={s.name}>
-							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
-								<img className="point" src={sensorUrl(s.value)} alt={s.name} />
+								<img className="point" src={ssUrl(s.type, s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
 									<div>{timeOf(s)}</div>
@@ -229,10 +228,10 @@ console.log('LANCE sort', a.lastTimeStamp, typeof a.lastTimeStamp, (typeof a.las
 					)}
 				</ul>
 				<h3>History</h3>
-				<ul>
+				<ul className='history'>
 					{history.map((s) =>
-						<li>
-							<a href={"https://bealfarm.com/"+s.name} className={s.type} title={s.name} target="_blank">
+						<li className={s.type}>
+							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
 								<img className="point" src={ssUrl(s.type, s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
