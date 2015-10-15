@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 import __fetch from "isomorphic-fetch";
 import React from "react";
 import InlineCss from "react-inline-css";
@@ -62,6 +64,30 @@ class BealFarm extends React.Component {
 		const switchUrl     = (s) => { return s ? 'switch_on.png' : 'switch_off.png' ; };
 		const sensorUrl     = (s) => { return s ? 'sensor_on.png' : 'sensor_off.png' ; };
 		const ssUrl     = (t, s) => { return t === 'sensor' ? sensorUrl(s) : switchUrl(s) ; };
+/*
+		const hasMp4     = (a) => { return "crap" ; };
+		const isHo     = function(a) {
+		// const hasMp4     = (a) => {
+			if( !a ) {
+				return '' ;
+			}
+			var path = '/home/lance/git/lpwrisk/static/e/' + a + '.mp4',
+				stats;
+			try {
+				stats = fs.statSync(path);
+				console.log("File exists", path, stats.isFile() );
+				return "FUCKmp4";
+			}
+			catch (e) {
+				console.log("File does not exist", path);
+				return "FUCKnomp4";
+			}
+			var rv = stats && stats.isFile() ? 'mp4' : '';
+			console.log("hasMp4 returning", rv);
+			return rv ;
+		}
+*/
+
 		const stateStrings = {
 			sensor: {
 				0: 'inactive',
@@ -82,7 +108,7 @@ class BealFarm extends React.Component {
 		// const timeOf     = (s) => { return new Date(s).toLocaleString(); }; not w React SS rendering
 		const timeOf     = (s) => {
 			// s.lastTimeStamp = 1442647938;
-			console.log( 'LANCE date ', s.lastTimeStamp );
+			// console.log( 'LANCE date ', s.lastTimeStamp );
 			if( !s.lastTimeStamp ) {
 				return '';
 			}
@@ -97,15 +123,15 @@ class BealFarm extends React.Component {
 			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
 			// just to make up for Safari not doing toLocalTimeString
 			var newTimeSplit = newTimeStr.split(' ');
-			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			// console.log( 'LANCE newTimeSplit', newTimeSplit );
 			var justMinSecs = newTimeSplit.slice(0);
-			console.log( 'LANCE justMinSecs1', justMinSecs );
+			// console.log( 'LANCE justMinSecs1', justMinSecs );
 			justMinSecs = justMinSecs[0].split(':');
-			console.log( 'LANCE justMinSecs2', justMinSecs );
+			// console.log( 'LANCE justMinSecs2', justMinSecs );
 			justMinSecs = justMinSecs.slice(0, 2).join(':');
-			console.log( 'LANCE justMinSecs3', justMinSecs );
+			// console.log( 'LANCE justMinSecs3', justMinSecs );
 			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
-			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
+			// console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
 			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver' });
 			// just to make up for Safari not doing toLocalDateString
 			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
@@ -116,7 +142,7 @@ class BealFarm extends React.Component {
 			return newTimeDateStr;
 		};
 		const historyOf     = (s) => {
-			console.log( 'LANCE history ', s.time );
+			// console.log( 'LANCE history ', s.time );
 			if( !s.time ) {
 				return '';
 			}
@@ -131,15 +157,15 @@ class BealFarm extends React.Component {
 			var newTimeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', timeZone: 'America/Denver', timeZoneName: "short"  });
 			// just to make up for Safari not doing toLocalTimeString
 			var newTimeSplit = newTimeStr.split(' ');
-			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			// console.log( 'LANCE newTimeSplit', newTimeSplit );
 			var justMinSecs = newTimeSplit.slice(0);
-			console.log( 'LANCE justMinSecs1', justMinSecs );
+			// console.log( 'LANCE justMinSecs1', justMinSecs );
 			justMinSecs = justMinSecs[0].split(':');
-			console.log( 'LANCE justMinSecs2', justMinSecs );
+			// console.log( 'LANCE justMinSecs2', justMinSecs );
 			justMinSecs = justMinSecs.slice(0, 2).join(':');
-			console.log( 'LANCE justMinSecs3', justMinSecs );
+			// console.log( 'LANCE justMinSecs3', justMinSecs );
 			newTimeStr = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
-			console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
+			// console.log( 'LANCE newTimeSplit13', newTimeSplit.slice(1,3) );
 			var newDateStr = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'America/Denver' });
 			// just to make up for Safari not doing toLocalDateString
 			newDateStr = newDateStr.split(' ').filter( function( e ) { return e !== '2015'; }).join(' ');;
@@ -164,7 +190,7 @@ console.log('LANCE render');	// , this.props.response);
 		curTime = curTime.toLocaleTimeString('en-US', {timeZone: 'America/Denver', timeZoneName: "short", hour: 'numeric', minute: 'numeric'});
 			// just to make up for Safari not doing toLocalTimeString
 			var newTimeSplit = curTime.split(' ');
-			console.log( 'LANCE newTimeSplit', newTimeSplit );
+			// console.log( 'LANCE newTimeSplit', newTimeSplit );
 			var justMinSecs = newTimeSplit.slice(0);
 			justMinSecs = justMinSecs[0].split(':');
 			justMinSecs = justMinSecs.slice(0, 2).join(':');
@@ -204,12 +230,20 @@ console.log('LANCE render');	// , this.props.response);
 			return b.lastTimeStamp - a.lastTimeStamp ;
 		});
 		const history = response.ssHistory;
-		console.log( 'history', history );
+		// console.log( 'history', history );
 
 				// <h1>Beal Farm</h1>
 				// <h3>Switches</h3>
 				// </ul>
 				// <ul>
+
+    		var files = fs.readdirSync('/home/lance/git/lpwrisk/static/e/');
+		function hasMp4(a) {
+			var index = files.indexOf( a + '.mp4' );
+			var rv = index === -1 ? '' : 'mp4' ;
+			console.log( 'LANCE hasMp42', index, rv );
+			return rv ;
+		}
 									// <div>{stateOf(s)}</div>
 		return (
 			<InlineCss stylesheet={BealFarm.css(pointSize)} namespace="BealFarm">
@@ -217,12 +251,13 @@ console.log('LANCE render');	// , this.props.response);
 				<ul className='current'>
 					{ssPoints.map((s) =>
 						<li className={s.type} key={s.name + '_current'}>
-							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
+							<a className={hasMp4(s.asset)} href={"/e/"+s.asset} title={s.name} target="_blank">
 								<img className="point" src={ssUrl(s.type, s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
 									<div>{timeOf(s)}</div>
 								</span>
+								<img className="asset" src="vidcam.png" alt="asset" />
 							</a>
 						</li>
 					)}
@@ -231,12 +266,13 @@ console.log('LANCE render');	// , this.props.response);
 				<ul className='history'>
 					{history.map((s) =>
 						<li className={s.type}>
-							<a href={"https://bealfarm.com/"+s.name} title={s.name} target="_blank">
+							<a className={hasMp4(s.asset)} href={"/e/"+s.asset} title={s.name} target="_blank">
 								<img className="point" src={ssUrl(s.type, s.value)} alt={s.name} />
 								<span>
 									<div>{nameOf(s)}</div>
 									<div>{historyOf(s)}</div>
 								</span>
+								<img className="asset" src="vidcam.png" alt="asset" />
 							</a>
 						</li>
 					)}
@@ -257,6 +293,22 @@ console.log('LANCE render');	// , this.props.response);
 				list-style-type: none;
 				padding-left: 0;
 			}
+				.asset {
+					position: absolute;
+					right: 2px;
+				}
+				& a.mp4 {
+				}
+				& a:not(.mp4) {
+					pointer-events: none;
+					cursor: default;
+					.asset {
+						display: none;
+					}
+				}
+				& a:not(.mp4) .asset {
+					display: none;
+				}
 			& a {
 				font-size: larger ;
 				white-space: nowrap;
@@ -278,8 +330,7 @@ console.log('LANCE render');	// , this.props.response);
 
 				color: black;
 				text-decoration: none;
-				pointer-events: none;
-				cursor: default;
+
 			}
 			& img {
 				// flex: none;
@@ -315,7 +366,7 @@ export default Transmit.createContainer(BealFarm, {
 			/**
 			 * Load a few ss pionts using the Fetch API.
 			 */
-console.log('LANCE fetch', api);
+// console.log('LANCE fetch', api);
 			return fetch(
 				api + "" + '?location=BealFarm' +
 				`&per_page=100&page=${nextPage}`
@@ -335,7 +386,7 @@ console.log('LANCE fetch', api);
 
 				// refresh, don't accumulate: var allPoints = prevSsPoints.concat(fechedPoints);
 				var allPoints = fechedPoints ;
-console.log('LANCE allPoints', allPoints);
+// console.log('LANCE allPoints', allPoints);
 				return allPoints;
 			}).catch((error) => {
 				console.error(error);
