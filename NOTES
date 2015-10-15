@@ -9,12 +9,20 @@ x date on header
 x history
 	scrollable/expandable?
 
-texts
+x sort order
+
+x texts
+
+ensure msh keeps running
+
+use real changed value, not derived historic?
 
 cameras
 
-x sort order
+send timezone history, causes?
 
 dead checker
 
 unable to set time zones upon time format requests on mobile/safari
+
+missed sensor curl requests can cause sensor indicator to stick on
