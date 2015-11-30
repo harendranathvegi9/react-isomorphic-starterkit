@@ -10,9 +10,9 @@ function mfTimeDate( time, timeZone ) {
 		// new Date( time * 1000 ).toLocaleTimeString('en-US', {timeZone: timeZone, timeZoneName: "short", hour: 'numeric', minute: 'numeric'}) + ' ' +
 		// new Date( time * 1000 ).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: timeZone  });
 	var m = moment( new Date( time * 1000 ) );
-console.log('LANCE Moment m ', m );
+// console.log('LANCE Moment m ', m );
 	var n = m.tz( timeZone );
-console.log('LANCE Moment n ', m );
+// console.log('LANCE Moment n ', m );
 	return n.format( 'h:mm a z ddd MMM D' );	// YYYY
 }
 
@@ -264,7 +264,7 @@ console.log('LANCE render');	// , this.props.response);
 		function hasMp4(a) {
 			var index = files.indexOf( a + '.mp4' );
 			var rv = index === -1 ? '' : 'mp4' ;
-			console.log( 'LANCE hasMp42', index, rv );
+			// console.log( 'LANCE hasMp42', index, rv );
 			return rv ;
 		}
 									// <div>{stateOf(s)}</div>

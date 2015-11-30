@@ -5,7 +5,8 @@ import React from "react";
 import InlineCss from "react-inline-css";
 import Transmit from "react-transmit";
 
-var thisLocation = 'NicsPlace';
+var thisLocationId = 'NicsPlace';
+var thisLocationName = 'Ni's Place';
 /**
  * main React application entry-point for both the server and client.
  */
@@ -196,7 +197,11 @@ console.log('LANCE render');	// , this.props.response);
 			justMinSecs = justMinSecs[0].split(':');
 			justMinSecs = justMinSecs.slice(0, 2).join(':');
 			curTime = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
+<<<<<<< HEAD
 		const curTimeString = 'Beal Farm at ' + curTime;
+=======
+		const curTimeString = thisLocationName + ' at ' + curTime;
+>>>>>>> 89f228fa9a846f09314856f09585900b3e2bd75e
 		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
 		}).sort( function( a, b ) {
@@ -369,7 +374,7 @@ export default Transmit.createContainer(Location, {
 			 */
 // console.log('LANCE fetch', api);
 			return fetch(
-				api + "" + '?location=' + thisLocation +
+				api + "" + '?location=' + thisLocationId +
 				`&per_page=100&page=${nextPage}`
 			).then((response) => response.json()).then((body) => {
 				/**
