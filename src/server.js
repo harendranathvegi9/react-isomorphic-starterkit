@@ -10,6 +10,7 @@ import routes from "views/routes";
 import url from "url";
 
 var hostname = process.env.HOSTNAME || "localhost";
+var exthostname = process.env.EXTHOSTNAME || "bealfarm.com";
 
 /**
  * Start Hapi server on port 8000.
@@ -102,7 +103,7 @@ server.ext("onPreResponse", (request, reply) => {
 					</html>`
 				);
 
-				const webserver = process.env.NODE_ENV === "production" ? "" : "//" + hostname + ":8080";
+				const webserver = process.env.NODE_ENV === "production" ? "" : "//" + exthostname + ":8080";
 				output          = Transmit.injectIntoMarkup(output, reactData, [`${webserver}/dist/client.js`]);
 
 				reply(output);
