@@ -197,11 +197,7 @@ console.log('LANCE render');	// , this.props.response);
 			justMinSecs = justMinSecs[0].split(':');
 			justMinSecs = justMinSecs.slice(0, 2).join(':');
 			curTime = justMinSecs + ' ' + newTimeSplit.slice(1,3).join(' ');
-<<<<<<< HEAD
-		const curTimeString = 'Beal Farm at ' + curTime;
-=======
 		const curTimeString = thisLocationName + ' at ' + curTime;
->>>>>>> 89f228fa9a846f09314856f09585900b3e2bd75e
 		const switches = response.ssPoints.filter( function( s ) {
 			return s.type === 'switch' ;
 		}).sort( function( a, b ) {
