@@ -1,4 +1,5 @@
 import BealFarm from "views/BealFarm";
+import NicsPlace from "views/NicsPlace";
 import Event from "views/Event";
 
 /**
@@ -7,5 +8,6 @@ import Event from "views/Event";
 export default [
 	{path: "/e/*", component: Event},
 	// {path: "/oneevent", component: Event}
-	{path: "/", component: BealFarm}
+	{path: "/", component: BealFarm},
+	{path: "/np", component: NicsPlace}
 ];
